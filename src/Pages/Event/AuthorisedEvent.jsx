@@ -91,9 +91,20 @@ function AuthorisedEvent({ token }) {
 	const [activeStep, setActiveStep] = React.useState(0);
 	const { handleChange, handleFocus, handleSubmit, values, setValues, errors, validated } = useForm();
 
+	const freeEntry = eventData.price === 0;
+
 	async function handleNext() {
+
+
 		if (activeStep < steps.length - 1) {
-			setActiveStep((prevActiveStep) => prevActiveStep + 1);
+			if (activeStep === 0 && freeEntry) {
+				// If free entry, skip payment step
+				setActiveStep((prevActiveStep) => prevActiveStep + 2);
+			} else {
+				setActiveStep((prevActiveStep) => prevActiveStep + 1);
+			}
+
+
 		}
 
 		if (activeStep === 1) {
@@ -105,8 +116,14 @@ function AuthorisedEvent({ token }) {
 				return prevState;
 			});
 		}
-		if (activeStep === steps.length - 1 && bookedSeats.length > 0 && validated) {
+
+
+		if (activeStep === steps.length - 1 && bookedSeats.length > 0 && (validated || freeEntry)) {
+			console.log(activeStep);
 			if (savePayment) {
+
+				const cardDetails = freeEntry ? null : values.cardNumber;
+
 				await makeRequest('PUT', '/customer/update', {
 					token: token,
 					first_name: null,
@@ -114,10 +131,12 @@ function AuthorisedEvent({ token }) {
 					email: null,
 					password: null,
 					profile_picture: null,
-					card_details: values.cardNumber,
+					card_details: cardDetails,
 					points: null,
 				})
 			}
+
+			console.log(freeEntry);
 			const points_used = Math.floor(redeem / bookedSeats.length)
 			bookedSeats.forEach(async seat => {
 
@@ -137,7 +156,13 @@ function AuthorisedEvent({ token }) {
 	};
 
 	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+		if (freeEntry && activeStep === 2) {
+			setActiveStep((prevActiveStep) => prevActiveStep - 2);
+		} else {
+			setActiveStep((prevActiveStep) => prevActiveStep - 1);
+		}
+
 	};
 
 	async function handleReset() {
@@ -431,15 +456,20 @@ function AuthorisedEvent({ token }) {
 																/>
 															</Form.Group>
 														</Col>
+
 													</Row>
-													<Button
-														size={"block"}
-														data-testid="validateButton"
-														id="validateButton"
-														type="submit"
-													>
-														Validate
-													</Button>
+
+													<Col >
+														<Button
+															size={"block"}
+															data-testid="validateButton"
+															id="validateButton"
+															type="submit"
+														>
+															Validate
+														</Button>
+													</Col>
+
 												</Form>
 											</div>
 											<Alert

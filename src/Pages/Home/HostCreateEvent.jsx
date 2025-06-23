@@ -101,11 +101,14 @@ function HostCreateEvent() {
 
 	async function createEvent() {
 		if (start_time.length !== 0 && end_time.length !== 0) {
-			const startTimeString = eventDate + 'T' + start_time;
-			const start_date_iso = new Date(startTimeString).toISOString();
+			//const startTimeString = eventDate + 'T' + start_time;
+			//const start_date_iso = new Date(startTimeString).toISOString();
 
-			const endTimeString = eventDate + 'T' + end_time;
-			const end_date_iso = new Date(endTimeString).toISOString();
+			const start_date_iso = dayjs(`${eventDate}T${start_time.format('HH:mm')}`).toISOString();
+
+			//const endTimeString = eventDate + 'T' + end_time;
+			//const end_date_iso = new Date(endTimeString).toISOString();
+			const end_date_iso = dayjs(`${eventDate}T${end_time.format('HH:mm')}`).toISOString();
 
 			const response = await makeRequest('POST', '/event', {
 				token: token,
