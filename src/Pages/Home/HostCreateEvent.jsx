@@ -58,8 +58,8 @@ function HostCreateEvent() {
 	const [eventImage, setEventImage] = React.useState(null);
 	const [eventPrice, setEventPrice] = React.useState('');
 	const [eventDescription, setEventDescription] = React.useState('');
-	const [start_time, setStartTime] = React.useState('');
-	const [end_time, setEndTime] = React.useState('');
+	const [start_time, setStartTime] = React.useState(dayjs().set('hour', 9).startOf('hour'));
+	const [end_time, setEndTime] = React.useState(dayjs().set('hour', 17).startOf('hour'));
 
 	const [trackStartHour, setTrackStartHour] = React.useState(6)
 	const startHour = dayjs().set('hour', trackStartHour).startOf('hour');
