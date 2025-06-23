@@ -2,7 +2,16 @@
 A Website used for hosting gatherings with features including
 
 - online payment
--
+- User Management
+- Booking management
+- Event Management
+- Reviews
+- Searching and Filter
+- Reminders and Confirmation
+- Recommendations
+- Chat Channels
+- Rewards and Gamification
+- Chatbot (Non-AI)
 
 ## Setup
 
