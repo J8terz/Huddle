@@ -15,7 +15,7 @@ function Protected({ token, children, path = '/' }) {
   if (!token) {
     return (
       <Navigate 
-        to="/login" 
+        to="/" 
         state={{ 
           from: location,
           redirectTo: redirectPath 

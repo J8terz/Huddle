@@ -32,8 +32,11 @@ function App() {
     <>
       <Router>
         <Routes>
+
           <Route path="/login" element={<Login token={token} setToken={setToken} />} />
           <Route path="/register" element={<Register token={token} setToken={setToken} />} />
+          <Route path="/home" element={<Home token={token} setToken={setToken} />} />
+
 
           <Route path="/:userType/profile/:id" element={
             <Protected token={token} path='/'>
@@ -62,9 +65,7 @@ function App() {
 
           <Route path='/' element={<TopBarComponent token={token} setToken={setToken} />}>
             <Route path='' element={
-              <Protected token={token} path='/'>
                 <Home />
-              </Protected>
             }>
               <Route path="home/:userType/:id" element={
                 <Protected token={token}>

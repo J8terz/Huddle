@@ -435,6 +435,7 @@ function Home() {
 				: <div style={event_container}>
 					<div style={flexRowSpaceBetween}>
 						<div style={container1Header}>
+							
 							<YellowText text="Events" /> popping right now!
 						</div>
 					</div>
