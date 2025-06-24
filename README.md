@@ -13,9 +13,14 @@ A Website used for hosting gatherings with features including
 - Rewards and Gamification
 - Chatbot (Non-AI)
 
-## Setup
 
-Note: These instructions are used for UNIX
+To setup the program run the following files:
+Note: All instructions are used for UNIX
+
+bash setup.sh  # for set up
+
+## Manual Setup
+
 ### Frontend
 #### Required packages
 Make sure the React version in use is 18.2.0
@@ -65,6 +70,18 @@ sudo apt install postgresql postgresql-contrib
 sudo service postgresql start
 
 then, create the user
+
+## RUN
+### Frontend
+
+npm start
+
+### Backend
+
+cd backend
+python3 -m server
+
+
 
 
 

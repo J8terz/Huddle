@@ -30,6 +30,9 @@ PACKAGES=(
     "react-qr-code@2.0.16"
 )
 
+
+
+
 for PACKAGE in "${PACKAGES[@]}"; do
     if ! npm list "$PACKAGE" &>/dev/null; then
         echo "Installing $PACKAGE..."
@@ -47,6 +50,7 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
+cd backend
 VENV_DIR="huddle_env"
 
 if [ -d "$VENV_DIR" ]; then
@@ -57,7 +61,7 @@ else
 fi
 
 source huddle_env/bin/activate
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
 
 
 # Database
