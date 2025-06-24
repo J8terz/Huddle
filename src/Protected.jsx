@@ -12,7 +12,4 @@ function Protected({ token, children}) {
   return children;
 }
 
-// Use either default OR named export (choose one)
 export default Protected;
-// OR
-// export { Protected };

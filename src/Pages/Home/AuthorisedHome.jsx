@@ -10,6 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import emptyHost from '../../images/emptyHostBanner.jpg'
 import emptyCustomer from '../../images/emptyCustomerBanner.jpg'
 import Stack from '@mui/material/Stack';
+import PermanentDrawerLeft from '../Profile/Sidebar/PermSideBar';
 
 const container = {
 	padding: "20px",
@@ -125,6 +126,11 @@ function AuthorisedHome() {
 	}, [])
 	return (
 		<>
+			<div>
+				<PermanentDrawerLeft token={token} />
+			</div>
+			
+
 			<div style={container}>
 				{isLoading ?  
 						<Box sx={{ width: '100%' }}>

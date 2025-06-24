@@ -33,4 +33,4 @@ apt-get install python3-dev libpq-dev postgresql-client
 pip install -r requirements.txt
 
 # Database
-# TODO
+

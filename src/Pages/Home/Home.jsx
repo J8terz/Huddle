@@ -485,7 +485,7 @@ function Home() {
 								</p>
 							}
 						>
-							<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+							<Grid container wrap='wrap' justifyContent="center" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
 								{currentEvents?.map((event) => (
 									<Grid container item xs={12} sm={6} md={4} key={event.id}>
 										<HomePageGridItem
