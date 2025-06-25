@@ -1,88 +1,59 @@
-# Huddle
-A Website used for hosting gatherings with features including
+# Huddle - Event Hosting Platform
 
-- online payment
-- User Management
-- Booking management
-- Event Management
-- Reviews
-- Searching and Filter
-- Reminders and Confirmation
-- Recommendations
-- Chat Channels
-- Rewards and Gamification
-- Chatbot (Non-AI)
+A comprehensive website for hosting and managing gatherings with powerful features.
 
+## ✨ Features
 
-To setup the program run the following files:
-Note: All instructions are used for UNIX
+- **User Management** - Secure authentication and profile management
+- **Event Management** - Create, update, and organize events
+- **Booking System** - Complete booking lifecycle management
+- **Online Payments** - Secure payment processing
+- **Reviews & Ratings** - User feedback system
+- **Advanced Search** - Powerful filtering and discovery
+- **Notifications** - Reminders and confirmations
+- **Recommendations** - Personalized event suggestions
+- **Community Features**:
+  - Chat Channels
+  - Non-AI Chatbot
+- **Gamification** - Rewards and engagement systems
 
-bash setup.sh  # for set up
+## 🚀 Manual Setup (UNIX Systems)
 
-## Manual Setup
+```bash
 
-### Frontend
-#### Required packages
-Make sure the React version in use is 18.2.0
-install the react version using the following line:
+# Frontend
+# Run the automated setup script
+bash setup.sh
 
+# Install core React dependencies
 npm install react@18.2.0 react-dom@18.2.0
 
+# Install required packages
+npm install axios react-router-dom @mui/material @emotion/react @emotion/styled \
+@mui/icons-material @mui/lab react-bootstrap bootstrap react-chatbot-kit \
+dayjs moment-timezone @mui/x-date-pickers react-credit-cards-2 \
+react-infinite-scroll-component @kiwicom/orbit-components bad-words \
+@fullcalendar/react @fullcalendar/daygrid @fullcalendar/timegrid \
+@fullcalendar/interaction @fullcalendar/bootstrap @fortawesome/fontawesome-free \
+card-validator react-qr-code
 
-then install the following required packages:
-
-npm install axios
-npm install react-router-dom
-npm install @mui/material @emotion/react @emotion/styled
-npm install @mui/icons-material
-npm install @mui/lab
-npm install react-bootstrap bootstrap
-npm install react-chatbot-kit
-npm install dayjs moment-timezone
-npm install @mui/x-date-pickers
-npm install react-credit-cards-2
-npm install react-infinite-scroll-component
-npm install @kiwicom/orbit-components
-npm install bad-words
-npm install @fullcalendar/react @fullcalendar/daygrid @fullcalendar/timegrid @fullcalendar/interaction @fullcalendar/bootstrap
-npm install @fortawesome/fontawesome-free
-npm install card-validator
-npm install react-qr-code
-
-
-### Server & Database
-#### Setup
-##### Server
-run the following code to setup a python env and install the required packages
-
+#Backend
+# Create and activate virtual environment
 python3 -m venv huddle_env
 source huddle_env/bin/activate
+
+# Install Python dependencies
 pip install -r requirements.txt
 
-*if there is an error installing the "psycopg2" package, try the following line
-
+# If psycopg2 installation fails:
 sudo apt-get install python3-dev libpq-dev postgresql-client
 
-##### Database
-if not installed yet, install postgres with the following lines
+#Database
 
+# Install PostgreSQL (if not already installed)
 sudo apt install postgresql postgresql-contrib
 sudo service postgresql start
 
-then, create the user
-
-## RUN
-### Frontend
-
-npm start
-
-### Backend
-
-cd backend
-python3 -m server
-
-
-
-
-
-
+# Create database user (replace with your details)
+sudo -u postgres createuser -P huddle_user
+sudo -u postgres createdb -O huddle_user huddle_db
