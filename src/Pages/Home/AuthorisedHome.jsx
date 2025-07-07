@@ -126,23 +126,18 @@ function AuthorisedHome() {
 	}, [])
 	return (
 		<>
-			<div>
-				<PermanentDrawerLeft token={token} />
-			</div>
-			
-
 			<div style={container}>
-				{isLoading ?  
-						<Box sx={{ width: '100%' }}>
-							<Skeleton width="100%" height={60}><Typography>.</Typography></Skeleton>
-							<Skeleton
-								sx={{paddingTop: '7%'}}
-								variant="rectangular"
-								width={700}
-								height={400}
-							/>	
-						</Box>
-					: 
+				{isLoading ?
+					<Box sx={{ width: '80%' }}>
+						<Skeleton width="100%" height={60}><Typography>.</Typography></Skeleton>
+						<Skeleton
+							sx={{ paddingTop: '7%' }}
+							variant="rectangular"
+							width={700}
+							height={400}
+						/>
+					</Box>
+					:
 					<div>
 						{
 							eventData.length !== 0 && params.userType === 'customer' &&
@@ -223,15 +218,15 @@ function AuthorisedHome() {
 											<Stack direction="column" alignItems="center" justifyContent='flex-end' spacing={-0.2}>
 												<h3>{event.title}</h3>
 												<p> Begins at: {new Date((new Date(event.start_date)).getTime() + ((new Date(event.start_date)).getTimezoneOffset() * 60000)).toLocaleString('en-AU', {
-														day: '2-digit',
-														month: '2-digit',
-														year: 'numeric',
-														hour: '2-digit',
-														minute: '2-digit',
-														timeZone: "Australia/Sydney"
-													})}
+													day: '2-digit',
+													month: '2-digit',
+													year: 'numeric',
+													hour: '2-digit',
+													minute: '2-digit',
+													timeZone: "Australia/Sydney"
+												})}
 												</p>
-												<Stack direction="row" justifyContent='center' spacing={2.5} style={{paddingLeft: '0.2%'}}>
+												<Stack direction="row" justifyContent='center' spacing={2.5} style={{ paddingLeft: '0.2%' }}>
 													<p>Venue: {event.venue}</p>
 													<p>Category: {event.tags}</p>
 												</Stack>
@@ -245,7 +240,7 @@ function AuthorisedHome() {
 						</Carousel>
 						{
 							params.userType === 'host' &&
-							<Button style={defaultButton} 
+							<Button style={defaultButton}
 								onMouseEnter={(e) => {
 									e.target.style.backgroundColor = 'rgb(255, 215, 51)';
 								}}
@@ -253,9 +248,9 @@ function AuthorisedHome() {
 									e.target.style.backgroundColor = 'rgb(255,198,0)';
 								}}
 								onClick={() => navigate(`/${params.userType}/${params.id}/create`)
-							}
-							> 
-								Create new Event! 
+								}
+							>
+								Create new Event!
 							</Button>
 						}
 

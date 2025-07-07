@@ -36,6 +36,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltSharpIcon from '@mui/icons-material/FilterAltSharp';
 import Tooltip from '@mui/material/Tooltip';
+import PermanentDrawerLeft from '../Profile/Sidebar/PermSideBar';
 
 import Chatbot from "react-chatbot-kit";
 import 'react-chatbot-kit/build/main.css';
@@ -322,278 +323,285 @@ function Home() {
 
 	return (
 		<>
-			<div style={outer_container}>
-				{!token ? <HomeMiddleComponent /> : <Outlet context={token} />}
-			</div>
-			<Dialog
-				open={open}
-				onClose={handleClose}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-				fullWidth={true}
-				maxWidth='lg'
-			>
-				<DialogTitle id="alert-dialog-title" style={{ margin: "10px", padding: "10px", textAlign: "center", fontWeight: "bold", fontSize: "x-large" }}>
-					{"Find your next event by narrowing the search!"}
-				</DialogTitle>
-				<Divider />
-				<DialogContent style={{ margin: "10px", padding: "10px" }}>
-					<Form>
-						<TextField
-							id="Event-Description-Input"
-							label="Event Description"
-							multiline
-							fullWidth
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							maxRows={4}
-							style={{ margin: "5px 0 10px 0" }}
-						/>
-						<Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
-							<Col>
-								<FormControl fullWidth>
-									<InputLabel id="Venue-Selector-Label">Venue</InputLabel>
+			<div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+				<div>
+					<PermanentDrawerLeft token={token} />
+				</div>
+				<div>
+					<div style={outer_container}>
+						{!token ? <HomeMiddleComponent /> : <Outlet context={token} />}
+					</div>
+					<Dialog
+						open={open}
+						onClose={handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+						fullWidth={true}
+						maxWidth='lg'
+					>
+						<DialogTitle id="alert-dialog-title" style={{ margin: "10px", padding: "10px", textAlign: "center", fontWeight: "bold", fontSize: "x-large" }}>
+							{"Find your next event by narrowing the search!"}
+						</DialogTitle>
+						<Divider />
+						<DialogContent style={{ margin: "10px", padding: "10px" }}>
+							<Form>
+								<TextField
+									id="Event-Description-Input"
+									label="Event Description"
+									multiline
+									fullWidth
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+									maxRows={4}
+									style={{ margin: "5px 0 10px 0" }}
+								/>
+								<Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+									<Col>
+										<FormControl fullWidth>
+											<InputLabel id="Venue-Selector-Label">Venue</InputLabel>
+											<Select
+												labelId="Venue-Selector-Label"
+												id="Venue-Selector"
+												value={venue}
+												label="Venue"
+												onChange={(e) => setVenue(e.target.value)}
+											>
+												<MenuItem value={"ICC"}>ICC</MenuItem>
+												<MenuItem value={"Qudos"}>Qudos</MenuItem>
+												<MenuItem value={"Amcor"}>Amcor</MenuItem>
+											</Select>
+										</FormControl>
+									</Col>
+								</Form.Group>
+
+								<FormControl style={{ width: "100%" }}>
+									<InputLabel id="demo-multiple-chip-label">Tags</InputLabel>
 									<Select
-										labelId="Venue-Selector-Label"
-										id="Venue-Selector"
-										value={venue}
-										label="Venue"
-										onChange={(e) => setVenue(e.target.value)}
+										labelId="demo-multiple-chip-label"
+										id="select-tags"
+										multiple
+										value={tags}
+										onChange={handleTagsChange}
+										input={<OutlinedInput id="select-multiple-chip" label="Tags" />}
+										renderValue={(selected) => (
+											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+												{selected.map((value) => (
+													<Chip key={value} label={value} />
+												))}
+											</Box>
+										)}
+										MenuProps={MenuProps}
 									>
-										<MenuItem value={"ICC"}>ICC</MenuItem>
-										<MenuItem value={"Qudos"}>Qudos</MenuItem>
-										<MenuItem value={"Amcor"}>Amcor</MenuItem>
+										{tagNames.map((name) => (
+											<MenuItem
+												key={name}
+												value={name}
+												style={getStyles(name, tags, theme)}
+											>
+												{name}
+											</MenuItem>
+										))}
 									</Select>
 								</FormControl>
-							</Col>
-						</Form.Group>
 
-						<FormControl style={{ width: "100%" }}>
-							<InputLabel id="demo-multiple-chip-label">Tags</InputLabel>
-							<Select
-								labelId="demo-multiple-chip-label"
-								id="select-tags"
-								multiple
-								value={tags}
-								onChange={handleTagsChange}
-								input={<OutlinedInput id="select-multiple-chip" label="Tags" />}
-								renderValue={(selected) => (
-									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-										{selected.map((value) => (
-											<Chip key={value} label={value} />
+								<div style={{ margin: "10px", paddingTop: '7%' }}>
+									<Slider
+										aria-label="Always visible"
+										value={price}
+										onChange={(e) => setPrice(e.target.value)}
+										getAriaValueText={valuetext}
+										step={10}
+										marks={marks}
+										max={1000}
+										valueLabelDisplay="on"
+										style={{ color: "rgba(255,215, 51)" }}
+									/>
+								</div>
+
+								<div style={{ display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
+									<FormControlLabel
+										control={<Checkbox checked={trending} onChange={(e) => { setTrending(e.target.checked) }} />}
+										label="Get All Trending Events Only"
+									/>
+									<FormControlLabel
+										control={<Checkbox checked={ageFilter} onChange={(e) => { setAgeFilter(e.target.checked) }} />}
+										label="Apply Family-Friendly Filter"
+									/>
+								</div>
+							</Form>
+						</DialogContent>
+						<DialogActions>
+							<Button variant='contained' color='success' disabled={!everySetted ? true : false} onClick={handleAdvancedFilter} autoFocus>
+								Confirm Filters
+							</Button>
+							<Button variant='contained' color='error' onClick={handleClose}>Close</Button>
+						</DialogActions>
+					</Dialog>
+					{isLoading ? <LoadingComponent />
+						: <div style={event_container}>
+							<div style={flexRowSpaceBetween}>
+								<div style={container1Header}>
+
+									<YellowText text="Events" /> popping right now!
+								</div>
+							</div>
+							<div style={container2}>
+								<Paper
+									component="form"
+									sx={{ display: 'flex', alignItems: 'center', width: 900, backgroundColor: '#F0F0F0' }}
+								>
+									<Tooltip title="Apply Filter" arrow placement="left">
+										<IconButton sx={{ p: '10px' }} onClick={handleClickOpen}>
+											<FilterAltSharpIcon />
+										</IconButton>
+									</Tooltip>
+									<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+									<InputBase
+										sx={{ ml: 1, flex: 1 }}
+										placeholder="Search Huddle..."
+										onChange={handleSearch}
+										value={searchInput}
+									/>
+									<IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => goSearch()}>
+										<SearchIcon />
+									</IconButton>
+									<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+									<Tooltip title="Ask HuddleBot" arrow placement="right">
+										<IconButton sx={{ p: '10px' }} onClick={handleBotOpen}>
+											<LiveHelpSharpIcon />
+										</IconButton>
+									</Tooltip>
+								</Paper>
+							</div>
+							<div style={flexRowSpaceEvenly}>
+								<button style={getTagStyle('Current')} onClick={() => { handleEventState('Current') }}>Current/Future Events 📢 </button>
+								<button style={getTagStyle('Past')} onClick={() => { handleEventState('Past') }}>Past Events 📢 </button>
+							</div>
+							{tagSelected === 'Current' &&
+								<InfiniteScroll
+									dataLength={currentEvents.length}
+									next={loadMoreCurrent}
+									hasMore={isEndCurrent}
+									height={'410px'}
+									hasChildren={true}
+									loader={<LinearProgress />}
+									endMessage={
+										<p style={{ textAlign: 'center' }}>
+											<br />
+											<b>Yay! This is the end! You have finally seen all the current events. </b>
+										</p>
+									}
+								>
+									<Grid container wrap='wrap' justifyContent="center" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+										{currentEvents?.map((event) => (
+											<Grid container item xs={12} sm={6} md={4} key={event.id}>
+												<HomePageGridItem
+													key={event.id}
+													name={event.title}
+													description={event.description}
+													start_date={event.start_date}
+													venue={event.venue}
+													image={event.event_image}
+													tag={event.tags}
+													onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
+												/>
+											</Grid>
 										))}
-									</Box>
-								)}
-								MenuProps={MenuProps}
-							>
-								{tagNames.map((name) => (
-									<MenuItem
-										key={name}
-										value={name}
-										style={getStyles(name, tags, theme)}
-									>
-										{name}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-
-						<div style={{ margin: "10px", paddingTop: '7%' }}>
-							<Slider
-								aria-label="Always visible"
-								value={price}
-								onChange={(e) => setPrice(e.target.value)}
-								getAriaValueText={valuetext}
-								step={10}
-								marks={marks}
-								max={1000}
-								valueLabelDisplay="on"
-								style={{ color: "rgba(255,215, 51)" }}
-							/>
-						</div>
-
-						<div style={{ display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
-							<FormControlLabel
-								control={<Checkbox checked={trending} onChange={(e) => { setTrending(e.target.checked) }} />}
-								label="Get All Trending Events Only"
-							/>
-							<FormControlLabel
-								control={<Checkbox checked={ageFilter} onChange={(e) => { setAgeFilter(e.target.checked) }} />}
-								label="Apply Family-Friendly Filter"
-							/>
-						</div>
-					</Form>
-				</DialogContent>
-				<DialogActions>
-					<Button variant='contained' color='success' disabled={!everySetted ? true : false} onClick={handleAdvancedFilter} autoFocus>
-						Confirm Filters
-					</Button>
-					<Button variant='contained' color='error' onClick={handleClose}>Close</Button>
-				</DialogActions>
-			</Dialog>
-			{isLoading ? <LoadingComponent />
-				: <div style={event_container}>
-					<div style={flexRowSpaceBetween}>
-						<div style={container1Header}>
-							
-							<YellowText text="Events" /> popping right now!
-						</div>
-					</div>
-					<div style={container2}>
-						<Paper
-							component="form"
-							sx={{ display: 'flex', alignItems: 'center', width: 900, backgroundColor: '#F0F0F0' }}
-						>
-							<Tooltip title="Apply Filter" arrow placement="left">
-								<IconButton sx={{ p: '10px' }} onClick={handleClickOpen}>
-									<FilterAltSharpIcon />
-								</IconButton>
-							</Tooltip>
-							<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-							<InputBase
-								sx={{ ml: 1, flex: 1 }}
-								placeholder="Search Huddle..."
-								onChange={handleSearch}
-								value={searchInput}
-							/>
-							<IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => goSearch()}>
-								<SearchIcon />
-							</IconButton>
-							<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-							<Tooltip title="Ask HuddleBot" arrow placement="right">
-								<IconButton sx={{ p: '10px' }} onClick={handleBotOpen}>
-									<LiveHelpSharpIcon />
-								</IconButton>
-							</Tooltip>
-						</Paper>
-					</div>
-					<div style={flexRowSpaceEvenly}>
-						<button style={getTagStyle('Current')} onClick={() => { handleEventState('Current') }}>Current/Future Events 📢 </button>
-						<button style={getTagStyle('Past')} onClick={() => { handleEventState('Past') }}>Past Events 📢 </button>
-					</div>
-					{tagSelected === 'Current' &&
-						<InfiniteScroll
-							dataLength={currentEvents.length}
-							next={loadMoreCurrent}
-							hasMore={isEndCurrent}
-							height={'410px'}
-							hasChildren={true}
-							loader={<LinearProgress />}
-							endMessage={
-								<p style={{ textAlign: 'center' }}>
-									<br />
-									<b>Yay! This is the end! You have finally seen all the current events. </b>
-								</p>
-							}
-						>
-							<Grid container wrap='wrap' justifyContent="center" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-								{currentEvents?.map((event) => (
-									<Grid container item xs={12} sm={6} md={4} key={event.id}>
-										<HomePageGridItem
-											key={event.id}
-											name={event.title}
-											description={event.description}
-											start_date={event.start_date}
-											venue={event.venue}
-											image={event.event_image}
-											tag={event.tags}
-											onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
-										/>
 									</Grid>
-								))}
-							</Grid>
-						</InfiniteScroll>
-					}
-					{tagSelected === 'Past' &&
-						<InfiniteScroll
-							dataLength={pastEvents.length}
-							next={loadMorePast}
-							hasMore={isEndPast}
-							height={'410px'}
-							hasChildren={true}
-							loader={<LinearProgress />}
-							endMessage={
-								<p style={{ textAlign: 'center' }}>
-									<br />
-									<b>Yay! This is the end! You have finally seen all the past events. </b>
-								</p>
+								</InfiniteScroll>
 							}
-						>
-							<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-								{pastEvents?.map((event) => (
-									<Grid container item xs={12} sm={6} md={4} key={event.id}>
-										<HomePageGridItem
-											key={event.id}
-											name={event.title}
-											description={event.description}
-											start_date={event.start_date}
-											venue={event.venue}
-											image={event.event_image}
-											tag={event.tags}
-											onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
-										/>
+							{tagSelected === 'Past' &&
+								<InfiniteScroll
+									dataLength={pastEvents.length}
+									next={loadMorePast}
+									hasMore={isEndPast}
+									height={'410px'}
+									hasChildren={true}
+									loader={<LinearProgress />}
+									endMessage={
+										<p style={{ textAlign: 'center' }}>
+											<br />
+											<b>Yay! This is the end! You have finally seen all the past events. </b>
+										</p>
+									}
+								>
+									<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+										{pastEvents?.map((event) => (
+											<Grid container item xs={12} sm={6} md={4} key={event.id}>
+												<HomePageGridItem
+													key={event.id}
+													name={event.title}
+													description={event.description}
+													start_date={event.start_date}
+													venue={event.venue}
+													image={event.event_image}
+													tag={event.tags}
+													onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
+												/>
+											</Grid>
+										))}
 									</Grid>
-								))}
-							</Grid>
-						</InfiniteScroll>
-					}
-					{searchInput.length > 0 &&
-						<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-							{searchedEvents?.map((event) => (
-								<Grid container item xs={12} sm={6} md={4} key={event.id}>
-									<HomePageGridItem
-										key={event.id}
-										name={event.title}
-										description={event.description}
-										start_date={event.start_date}
-										venue={event.venue}
-										image={event.event_image}
-										tag={event.tags}
-										onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
-									/>
+								</InfiniteScroll>
+							}
+							{searchInput.length > 0 &&
+								<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+									{searchedEvents?.map((event) => (
+										<Grid container item xs={12} sm={6} md={4} key={event.id}>
+											<HomePageGridItem
+												key={event.id}
+												name={event.title}
+												description={event.description}
+												start_date={event.start_date}
+												venue={event.venue}
+												image={event.event_image}
+												tag={event.tags}
+												onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
+											/>
+										</Grid>
+									))}
 								</Grid>
-							))}
-						</Grid>
-					}
-					{applyFilter &&
-						<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-							{filteredEvents?.map((event) => (
-								<Grid container item xs={12} sm={6} md={4} key={event.id}>
-									<HomePageGridItem
-										key={event.id}
-										name={event.title}
-										description={event.description}
-										start_date={event.start_date}
-										venue={event.venue}
-										image={event.event_image}
-										tag={event.tags}
-										onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
-									/>
+							}
+							{applyFilter &&
+								<Grid container wrap='wrap' justifyContent="space-between" alignItems="center" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+									{filteredEvents?.map((event) => (
+										<Grid container item xs={12} sm={6} md={4} key={event.id}>
+											<HomePageGridItem
+												key={event.id}
+												name={event.title}
+												description={event.description}
+												start_date={event.start_date}
+												venue={event.venue}
+												image={event.event_image}
+												tag={event.tags}
+												onClick={() => { navigate(`/event/${event.id}/${params.userType}/${params.id}`) }}
+											/>
+										</Grid>
+									))}
 								</Grid>
-							))}
-						</Grid>
+							}
+						</div>
 					}
+					<Dialog
+						open={openRight}
+						onClose={() => { setOpenRight(false) }}
+						fullWidth={true}
+						maxWidth='xs'
+					>
+						<DialogContent style={{ backgroundColor: '#282c34' }}>
+							<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '6%' }}>
+								<Chatbot
+									config={config}
+									messageParser={MessageParser}
+									actionProvider={ActionProvider}
+								/>
+							</div>
+						</DialogContent>
+						<DialogActions style={{ justifyContent: 'center', backgroundColor: '#A9A9A9' }}>
+							<Button variant='contained' color='error' onClick={() => { setOpenRight(false) }}>End Chat</Button>
+						</DialogActions>
+					</Dialog>
 				</div>
-			}
-			<Dialog
-				open={openRight}
-				onClose={() => { setOpenRight(false) }}
-				fullWidth={true}
-				maxWidth='xs'
-			>
-				<DialogContent style={{ backgroundColor: '#282c34' }}>
-					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '6%' }}>
-						<Chatbot
-							config={config}
-							messageParser={MessageParser}
-							actionProvider={ActionProvider}
-						/>
-					</div>
-				</DialogContent>
-				<DialogActions style={{ justifyContent: 'center', backgroundColor: '#A9A9A9' }}>
-					<Button variant='contained' color='error' onClick={() => { setOpenRight(false) }}>End Chat</Button>
-				</DialogActions>
-			</Dialog>
+			</div>
 		</>
 
 	)
